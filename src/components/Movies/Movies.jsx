@@ -1,17 +1,19 @@
 import React, { useState } from "react";
+import MovieCard from "../MovieCard/MovieCard";
 import SearchIcon from "../../assets/search.svg";
 import "./Movies.css";
 
 const API_URL = "http://www.omdbapi.com/?i=tt3896198&apikey=5ab4303";
 
 function Movies() {
+  const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const searchMovies = async (title) => {
     const response = await fetch(`${API_URL}&s=${title}`);
     const data = await response.json();
 
-    console.log(data.Search);
+    setMovies(data.Search);
   };
 
   const handleKeyDown = (event) => {
@@ -40,6 +42,11 @@ function Movies() {
             onClick={() => searchMovies(searchTerm)}
           />
         </div>
+      </div>
+      <div className="movies-list">
+        {movies.map((movie) => (
+          <MovieCard movie={movie} key={movie.imdbID} />
+        ))}
       </div>
     </div>
   );
